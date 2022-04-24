@@ -1,0 +1,172 @@
+<div class="feeds">
+
+    <!------------------------FEED---------------->
+
+    <% if(posts.length>0) { %>
+
+        <% posts.forEach((post,index)=>{ %>
+            <div class="feed" id="post_<%= index %>">
+                <div class="head">
+                    <div class="user">
+                        <div class="profile-photo">
+                            <img src="../images/<%= post.postedBy.profilePic %>" alt="profile-picture">
+                        </div>
+                        <div class="info">
+                            <a href="/profile?id=<%=post.postedBy._id.toString()%>"
+                                style="text-decoration: none;color: black;">
+                                <h3>
+                                    <%= post.postedBy.username %>
+                                </h3>
+                            </a>
+                            <small id="time-stamp">
+                                <script>
+                                    window.addEventListener('load', (event) => {
+                                    });
+                                    var periods = {
+                                        month: 30 * 24 * 60 * 60 * 1000,
+                                        week: 7 * 24 * 60 * 60 * 1000,
+                                        day: 24 * 60 * 60 * 1000,
+                                        hour: 60 * 60 * 1000,
+                                        minute: 60 * 1000
+                                    };
+
+                                    function formatTime(diff) {
+
+                                        if (diff > periods.month) {
+                                            // it was at least a month ago
+                                            return Math.floor(diff / periods.month) + " months ago";
+                                        } else if (diff > periods.week) {
+                                            return Math.floor(diff / periods.week) + " weeks ago";
+                                        } else if (diff > periods.day) {
+                                            return Math.floor(diff / periods.day) + " days ago";
+                                        } else if (diff > periods.hour) { 
+                                            return Math.floor(diff / periods.hour) + " hours ago";
+                                        } else if (diff > periods.minute) {
+                                            return Math.floor(diff / periods.minute) + " minutes ago";
+                                        }
+                                        return "Just now";
+                                    }
+
+                                    console.log(new Date('<%=post.postDate%>'));
+                                    console.log(Date.now() - new Date('<%=post.postDate%>').getTime());
+                                    document.querySelector('#post_<%= index %> #time-stamp').innerHTML = formatTime(Date.now() - new Date('<%=post.postDate%>').getTime());
+                                </script>
+                            </small>
+                        </div>
+                    </div>
+                    <span class="edit">
+                        <i class="uil uil-ellipsis-h"></i>
+                    </span>
+
+                </div>
+
+                <% if(post.postImage) {%>
+                    <div class="photo">
+                        <img src="../images/<%= post.postImage %>">
+                    </div>
+                    <% }%>
+
+                        <div class="action-buttons">
+                            <div class="interaction-buttons" style="width: 100px;">
+                                <span>
+                                    <a href="/?postId=<%= post._id %>&id=<%= userId %>" class="like-button not-liked">
+                                        <img class="not-liked-img" src="../images/heart.png"
+                                            style="width: 15px;margin: 0% 1%;align-items: center;">
+                                        <img class="liked-img" src="../images/heart_liked.png"
+                                            style="width: 15px;margin: 0% 1%;align-items: center;">
+                                    </a>
+                                </span>
+                                <span>
+                                    <img src="../images/speech-bubble.png"
+                                        style="width: 15px;margin: 0% 10%;cursor: pointer;;align-items: center;display:inline-block">
+                                </span>
+                                <span>
+                                    <img src="../images/share.png"
+                                        style="width: 15px;margin: 0% 0%;cursor: pointer;;align-items: center;display:inline-block">
+                                </span>
+                            </div>
+                            <div class="bookmark">
+                                <span>
+                                    <a href="/?postId=<%= post._id%>" class="bookmark-button not-bookmarked">
+                                        <img class="not-bookmarked-img" src="../images/bookmark.png"
+                                            style="width: 15px;">
+                                        <img class="bookmarked-img" src="../images/bookmark_bookmarked.png"
+                                            style="width: 15px;">
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div class="liked-by">
+
+                            <% if(post.postLikedBy.length===0) {%>
+                                <p class="liked-by" style="margin: 0%;">Be the first one to like the post.
+                                </p>
+                                <% }else if(post.postLikedBy.length===1) {%>
+                                    <span class="profile-photo"><img
+                                            src="../images/<%= post.postLikedBy[0].profilePic%>"></span>
+                                    <p class="liked-by">
+                                        Liked by <%= post.postLikedBy[0].username%></b>
+                                    </p>
+                                    <% }else{ %>
+                                        <span class="profile-photo"><img
+                                                src="../images/<%= post.postLikedBy[0].profilePic%>"></span>
+                                        <span class="profile-photo"><img
+                                                src="../images/<%= post.postLikedBy[1].profilePic%>"></span>
+                                        <p class="liked-by">
+                                            Liked by <%= post.postLikedBy[0].username%> and <%=
+                                                    post.postLikedBy.length-1 %>
+                                                    others.
+                                        </p>
+                                        <% } %>
+
+                        </div>
+
+                        <div class="caption">
+                            <p><b>
+                                    <%= post.postedBy.username %>
+                                </b>
+                                <%= post.postDescription %>
+                            </p>
+                        </div>
+                        <div class="comments text-muted">View All 0 comments</div>
+
+
+
+            </div>
+            <script>
+                window.addEventListener('load', (event) => {
+
+                    let postLike = document.querySelector('#post_<%= index %> .like-button');
+
+                    if ('<%- post.postLikedBy.filter(postLiked=>postLiked._id.toString()===userId.toString()).length>0%>' === 'true') {
+                        postLike.classList.add('liked');
+                        postLike.classList.remove('not-liked');
+                    }
+                    else {
+                        postLike.classList.add('not-liked');
+                        postLike.classList.remove('liked');
+                    }
+
+                    let postBookmark = document.querySelector('#post_<%= index %> .bookmark-button');
+
+                    if ('<%=bookmarks%>'.includes('<%=post._id%>')) {
+                        postBookmark.classList.add('bookmarked');
+                        postBookmark.classList.remove('not-bookmarked');
+                    }
+                    else {
+                        postBookmark.classList.add('not-bookmarked');
+                        postBookmark.classList.remove('bookmarked');
+                    }
+                });
+            </script>
+            <% }); %>
+
+                <% } else { %>
+
+                    <% } %>
+
+
+
+</div>

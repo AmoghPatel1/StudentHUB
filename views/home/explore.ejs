@@ -1,0 +1,125 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    <link rel="stylesheet" href="./css/explore.css">
+    </head>
+
+    <body>
+        <%- include('../includes/nav-bar.ejs') %>
+
+            <%- include('../includes/create-issue-modal.ejs') %>
+
+                <main>
+
+
+                    <div class="container">
+                        <div class="left">
+
+                            <!-- --------------------SIDEBAR----------------------->
+
+                            <%- include('../includes/side-bar.ejs') %>
+
+                                <!-------------------END OF SIDEBAR-------------------->
+
+                        </div>
+
+
+
+
+                        <!-- ------------------- MIDDLE --------------------------->
+                        <div class="middle">
+                            <h3 class="explore-page">Explore</h3>
+
+                            <div class="categories">
+
+                                <a href="/category/?category=electricity" style="text-decoration: none;color:black">
+                                    <div class="category" style="width: 12rem;height: 20rem;">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJLeX3iBQvxGGDJySzOqLM8zJ_f2pZpF-bnw&usqp=CAU"
+                                            class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Electricity</h5>
+                                            <p class="card-text">For all the issues related to electricity.
+                                            <p>
+                                        </div>
+                                    </div>
+                                </a>
+
+
+                                <a href="/category/?category=wifi" style="text-decoration: none;color:black">
+                                    <div class="category" style="width: 12rem;height: 20rem;">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrx-FWAuSmQfhKa_yfGX94wyWy95jCbEbyOw&usqp=CAU"
+                                            class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Wifi</h5>
+                                            <p class="card-text">For all the issues related to wifi.
+                                            <p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="/category/?category=sanitation" style="text-decoration: none;color:black">
+                                    <div class="category" style="width: 12rem;height: 20rem;">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8ZIU_I2BGPg2GJECyeUhd5v_qkMYPFX2hWw&usqp=CAU"
+                                            class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Sanitation</h5>
+                                            <p class="card-text">For all the issues related to sanitation.
+                                            <p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="/category/?category=mess" style="text-decoration: none;color:black">
+                                    <div class="category" style="width: 12rem;height: 20rem;">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvcQTlgu5tUcKDTDt14ZPYPWUPyjmg4AY3Aw&usqp=CAU"
+                                            class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Mess</h5>
+                                            <p class="card-text">For all the issues related to mess.
+                                            <p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="/category/?category=harassment" style="text-decoration: none;color:black">
+                                    <div class="category" style="width: 12rem;height: 20rem;">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJLtw-1__-lsBa7vMBdxVvsjHIOoUx66XYOA&usqp=CAU"
+                                            class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Harassment</h5>
+                                            <p class="card-text">For all the issues related to harassment.
+                                            <p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="/category/?category=washingmachine" style="text-decoration: none;color:black">
+                                    <div class="category" style="width: 12rem;height: 20rem;">
+                                        <img src="https://previews.123rf.com/images/tanyar30/tanyar301602/tanyar30160200014/52746073-preparing-the-wash-cycle-washing-machine-hands-and-clothes-.jpg"
+                                            class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Washing machine</h5>
+                                            <p class="card-text">For all the issues related to washing machine.
+                                            <p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+
+
+
+                        <!-- ------------------- RIGHT --------------------------->
+                        <div class="right">
+
+                            <!-- --------------------SUGGESTED USERS --------------------------->
+
+                            <%- include('../includes/suggested-user.ejs') %>
+                        </div>
+                </main>
+
+
+                </div>
+                <script src="./js/index.js"></script>
+                <%- include('../includes/end.ejs') %>

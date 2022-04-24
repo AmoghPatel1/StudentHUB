@@ -1,0 +1,97 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    </head>
+
+    <body>
+        <%- include('../includes/nav-bar.ejs') %>
+
+            <%- include('../includes/create-issue-modal.ejs') %>
+
+                <main>
+                    <div class="container">
+                        <!-- ------------------- LEFT --------------------------->
+                        <div class="left">
+                            <a class="profile">
+                                <div class="profile-photo">
+                                    <img src="./images/<%= searchedUserProfilePic %>" alt="profile-picture">
+                                </div>
+                                <div class="handle">
+                                    <h4>
+                                        <%= searchedUserUsername %>
+                                    </h4>
+                                    <p class="text-muted">
+                                        <%= searchedUserEmail %>
+                                    </p>
+                                </div>
+                            </a>
+
+                            <div class="sidebar">
+                                <a class="menu-item <%= path==='/home'?'active':''  %>" href="/home">
+                                    <span><i class="uil uil-home"></i></span>
+                                    <h3>Home</h3>
+                                </a>
+                                <a class="menu-item <%= path==='/explore'?'active':'' %>" href="/explore">
+                                    <span><i class="uil uil-compass"></i></span>
+                                    <h3>Explore</h3>
+                                </a>
+                                <a class="menu-item" id="notifications">
+                                    <span><i class="uil uil-bell"><small
+                                                class="notification-count">9+</small></i></span>
+                                    <h3>Notification</h3>
+                                </a>
+                                <a class="menu-item <%= path==='/bookmarks'?'active':'' %>" href="/bookmarks">
+                                    <span><i class="uil uil-bookmark"></i></span>
+                                    <h3>Bookmarks</h3>
+                                </a>
+                                <a class="menu-item <%= path==='/settings'?'active':''  %>" href="/settings">
+                                    <span><i class="uil uil-setting"></i></span>
+                                    <h3>Settings</h3>
+                                </a>
+                            </div>
+
+                            <% if(notMyProfile) { %>
+                                <% if(isFriend) { %>
+                                    <a href="/unfollow?id=<%=searchedUserId%>" style="text-decoration: none;color: black;">
+                                        <label id="follow-user-side-bar" for="follow user" class="btn btn-primary">Unfollow</label>
+                                    </a>
+                                <% } else { %>
+                                    <a href="/follow?id=<%=searchedUserId%>" style="text-decoration: none;color: black;">
+                                        <label id="follow-user-side-bar" for="follow user" class="btn btn-primary">Follow</label>
+                                    </a>
+                                <% } %> 
+                                <% } %>
+                        </div>
+
+
+
+                        <!-- ------------------- MIDDLE --------------------------->
+                        <div class="middle">
+                            <h3 class="users-issues">
+                                <%= searchedUserUsername %>'s issues
+                            </h3>
+
+                            <%- include('../includes/feed.ejs') %>
+
+                        </div>
+
+
+
+
+                        <!-- ------------------- RIGHT --------------------------->
+                        <div class="right">
+
+                            <!-- --------------------SUGGESTED USERS --------------------------->
+
+                            <%- include('../includes/suggested-user.ejs') %>
+
+                        </div>
+                    </div>
+                </main>
+
+
+                </div>
+                <script src="./js/profile.js"></script>
+    </body>
+
+    </html>

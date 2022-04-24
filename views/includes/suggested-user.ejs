@@ -1,0 +1,27 @@
+<div class="suggested-users">
+
+    <div class="heading">
+        <h4>Suggested Users</h4><i class="uil uil-users-alt"></i>
+    </div>
+
+    <% suggestedUsers.forEach((user,index)=>{ %>
+        <div class="user">
+
+            <div class="profile-photo">
+                <img src="../images/<%= user.profilePic %>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                min-width: 100%;
+                min-height: 100%" />
+            </div>
+            <div class="info">
+                <h3>
+                    <%=user.username%>
+                </h3>
+                <small>
+                    <%=user.email%>
+                </small>
+            </div>
+
+        </div>
+        <% }); %>
+
+</div>

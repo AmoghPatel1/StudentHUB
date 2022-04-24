@@ -1,0 +1,109 @@
+<div class="feeds">
+
+    <!------------------------FEED---------------->
+
+    <% if(posts.length>0) { %>
+
+        <% posts.forEach((post,index)=>{ %>
+            <div class="feed" id="post_<%= index %>">
+                <div class="head">
+                    <div class="user">
+                        <div class="profile-photo">
+                            <img src="../images/<%= post.postedBy.profilePic %>" alt="profile-picture">
+                        </div>
+                        <div class="info">
+                            <a href="/profile?id=<%=post.postedBy._id.toString()%>"
+                                style="text-decoration: none;color: black;">
+                                <h3>
+                                    <%= post.postedBy.username %>
+                                </h3>
+                            </a>
+                            <small id="time-stamp">
+                                <script>
+                                    window.addEventListener('load', (event) => {
+                                    });
+                                    var periods = {
+                                        month: 30 * 24 * 60 * 60 * 1000,
+                                        week: 7 * 24 * 60 * 60 * 1000,
+                                        day: 24 * 60 * 60 * 1000,
+                                        hour: 60 * 60 * 1000,
+                                        minute: 60 * 1000
+                                    };
+
+                                    function formatTime(diff) {
+
+                                        if (diff > periods.month) {
+                                            // it was at least a month ago
+                                            return Math.floor(diff / periods.month) + " months ago";
+                                        } else if (diff > periods.week) {
+                                            return Math.floor(diff / periods.week) + " weeks ago";
+                                        } else if (diff > periods.day) {
+                                            return Math.floor(diff / periods.day) + " days ago";
+                                        } else if (diff > periods.hour) { 
+                                            return Math.floor(diff / periods.hour) + " hours ago";
+                                        } else if (diff > periods.minute) {
+                                            return Math.floor(diff / periods.minute) + " minutes ago";
+                                        }
+                                        return "Just now";
+                                    }
+
+                                    console.log(new Date('<%=post.postDate%>'));
+                                    console.log(Date.now() - new Date('<%=post.postDate%>').getTime());
+                                    document.querySelector('#post_<%= index %> #time-stamp').innerHTML = formatTime(Date.now() - new Date('<%=post.postDate%>').getTime());
+                                </script>
+                            </small>
+                        </div>
+                    </div>
+                    <span class="edit">
+                        <i class="uil uil-ellipsis-h"></i>
+                    </span>
+
+                </div>
+
+                <% if(post.postImage) {%>
+                    <div class="photo">
+                        <img src="../images/<%= post.postImage %>">
+                    </div>
+                    <% }%>
+                        <div class="liked-by">
+
+                            <% if(post.postLikedBy.length===0) {%>
+                                <% }else if(post.postLikedBy.length===1) {%>
+                                    <span class="profile-photo"><img
+                                            src="../images/<%= post.postLikedBy[0].profilePic%>"></span>
+                                    <p class="liked-by">
+                                        Liked by <%= post.postLikedBy[0].username%></b>
+                                    </p>
+                                    <% }else{ %>
+                                        <span class="profile-photo"><img
+                                                src="../images/<%= post.postLikedBy[0].profilePic%>"></span>
+                                        <span class="profile-photo"><img
+                                                src="../images/<%= post.postLikedBy[1].profilePic%>"></span>
+                                        <p class="liked-by">
+                                            Liked by <%= post.postLikedBy[0].username%> and <%=
+                                                    post.postLikedBy.length-1 %>
+                                                    others.
+                                        </p>
+                                        <% } %>
+
+                        </div>
+
+                        <div class="caption" style="margin: 1% 0%;">
+                            <p><b>
+                                    <%= post.postedBy.username %>
+                                </b>
+                                <%= post.postDescription %>
+                            </p>
+                        </div>
+                        <div class="comments text-muted">View All 0 comments</div>
+
+            </div>
+            <% }); %>
+
+            <% } else { %>
+
+            <% } %>
+
+
+
+</div>

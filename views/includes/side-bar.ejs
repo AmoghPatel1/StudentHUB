@@ -1,0 +1,38 @@
+<a class="profile">
+    <div class="profile-photo">
+        <img src="../images/<%= profilePic %>" alt="profile-picture">
+    </div>
+    <div class="handle">
+        <h4><%= username %> </h4>
+        <p class="text-muted"><%= email %> </p>
+    </div>
+</a>
+
+<div class="sidebar">
+    <a class="menu-item <%= path==='/home'?'active':''  %>" href="/home">
+        <span><i class="uil uil-home"></i></span>
+        <h3>Home</h3>
+    </a>
+    <a class="menu-item <%= path==='/explore'?'active':'' %>" href="/explore">
+        <span><i class="uil uil-compass"></i></span>
+        <h3>Explore</h3>
+    </a>
+    <a class="menu-item" id="notifications">
+        <span><i class="uil uil-bell"><small class="notification-count">9+</small></i></span>
+        <h3>Notification</h3>
+    </a>
+    <a class="menu-item <%= path==='/bookmarks'?'active':'' %>" href="/bookmarks">
+        <span><i class="uil uil-bookmark"></i></span>
+        <h3>Bookmarks</h3>
+    </a>
+    <a class="menu-item <%= path==='/settings'?'active':''  %>" href="/settings">
+        <span><i class="uil uil-setting"></i></span>
+        <h3>Settings</h3>
+    </a>
+    <a class="menu-item <%= path==='/contactus'?'active':''  %>" href="/contactus">
+        <span><i class="uil uil-phone-volume"></i></span>
+        <h3>Contact Us</h3>
+    </a>
+</div>
+
+<label id="create-issue-side-bar" for="create post" class="btn btn-primary">Create Post</label>

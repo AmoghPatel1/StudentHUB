@@ -1,0 +1,54 @@
+<div class="modal-container modal-close" id="modal_container">
+    <div class="modal">
+        <div class="wrapper">
+            <section class="post">
+                <button id="close-modal" class="btn btn-primary">
+                    X
+                </button>
+                <header>Create Post</header>
+                <form action="/addPost" method="post" enctype="multipart/form-data">
+                    <div class="content">
+                        <div class="profile-photo">
+                            <img src="../images/<%= profilePic %>" alt="profile-picture">
+                        </div>
+                        <div class="details">
+                            <p><%=username%></p>
+                            <div class="category">
+                                <i class="uil uil-receipt"></i>
+                                <select style="background: none;" name="category" id="category">
+                                    <option value="electricity">Electricity</option>
+                                    <option value="wifi">Wifi</option>
+                                    <option value="sanitation">Sanitation</option>
+                                    <option value="mess">Mess</option>
+                                    <option value="harassment">Harassment</option>
+                                    <option value="washing-machine">Washing machine</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-wrapper">
+                        <div class="image">
+                            <img id="display-post-image" src="" alt="">
+                        </div>
+                    </div>
+                    <input id="default-btn" type="file" id="file" name="file" hidden>
+                    <textarea placeholder="What's bugging you?" name="description"></textarea>
+                    <div class="theme-emoji">
+                        <i class="uil uil-palette"></i>
+                        <i class="uil uil-smile-beam"></i>
+                    </div>
+                    <div class="options">
+                        <p>Add to your post</p>
+                        <ul class="list">
+                            <li><button type="button" onclick="defaultBtnActive()" id="add_file_button"><i
+                                        class="uil uil-image"></i></button></li>
+                            <li><i class="uil uil-tag-alt"></i></li>
+                            <li><i class="uil uil-emoji"></i></li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-primary" id="post_button">Post</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>

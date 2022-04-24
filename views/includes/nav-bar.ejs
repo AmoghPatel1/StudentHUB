@@ -1,0 +1,64 @@
+<nav>
+    <!-- ------------------- NAV-BAR --------------------------->
+    <div class="container">
+        <a href="/" style="text-decoration: none;color: black;">
+            <h2 class="logo">
+                Student HUB
+            </h2>
+        </a>
+        <div class="nav-bar-menu">
+            <a class="menu-item <%= path==='/home'?'active':''  %>" href="/home">
+                <span><b>Home</b></span>
+            </a>
+            <a class="menu-item <%= path==='/explore'?'active':''  %>" href="/explore">
+                <span><b>Explore</b></span>
+            </a>
+            <a class="menu-item <%= path==='/notification'?'active':''  %>" href="/notification" id="notifications">
+                <span><b>Notifications</b></span>
+            </a>
+            <a class="menu-item <%= path==='/bookmarks'?'active':''  %>" href="/bookmarks">
+                <span><b>Bookmarks</b></span>
+            </a>
+            <a class="menu-item <%= path==='/settings'?'active':''  %>" href="/settings">
+                <span><b>Settings</b></span>
+            </a>
+        </div>
+        <div class="search-bar">
+            <i class="uil uil-search"></i>
+            <input id="search-bar-input" type="search" placeholder="Search for issues">
+            <ul class="autocomplete-list" id="country-list">
+            </ul>
+        </div>
+        <div class="create">
+            <label id="create-issue-nav-bar" class="btn btn-primary" for="#create-post">Create</label>
+            <div id="profile-photo-nav" class="profile-photo">
+                <img src="../images/<%= profilePic %>" alt="profile-picture">
+            </div>
+            <div class="menu hidden-popup" id="profile-menu">
+                <h3 id="pop-up-username"><%= username %><br></h3>
+                <ul>
+                    <li><span><i class="uil uil-user-circle"></i></span><a href="/profile?id=<%=userId.toString()%>">My Profile</a></li>
+
+                    <li><span><i class="uil uil-edit"></i></span><a href="/settings">Edit profile</a></li>
+
+                    <li><span><i class="uil uil-bookmark"></i></span><a href="/bookmarks">Bookmarks</a></li>
+
+                    <li><span><i class="uil uil-envelope-edit"></i></span><a href="/profile?id=<%=userId.toString()%>">My Posts</a></li>
+
+                    <li>
+                        <form action="/logout" method="post">
+                            <span><i class="uil uil-sign-out-alt"></i></span>
+                            <button style="background: none; pointer-events: all;">
+                                <h3>Log out</h3>
+                            </button>
+                        </form>
+                    </li>
+
+                    <p><a class="menu-item%>" href="/contactus"><span>Contact Us</span> </a> <a class="menu-item %>" href="/meet-the-team"><span>About Us</span></a>  </p>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</nav>

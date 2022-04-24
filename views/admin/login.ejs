@@ -1,0 +1,39 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    <link rel="stylesheet" href="../css/register.css">
+    </head>
+
+    <body>
+        <div class="container" style="width:80%;max-width: 300px;">
+            <form action="/admin/login" class="sign-in-form" method="post">
+                <h2 class="title" style="margin: 5%;">Admin login</h2>
+                <div class="input-field">
+                    <i class="uil uil-user"></i>
+                    <input type="text" name="username" id="username" placeholder="Username"
+                        value="<%= username %>">
+                </div>
+                <div class="input-field">
+                    <i class="uil uil-lock"></i>
+                    <input type="password" name="password" id="password" placeholder="Password"
+                        value="<%= password %>">
+                </div>
+
+                <div class="warning">
+                    <p>
+                        <%=warningSignIn%>
+                    </p>
+                </div>
+                <div class="info">
+                    <p>
+                        <%=infoSignIn%>
+                    </p>
+                </div>
+
+                <input type="submit" value="Login" class="btn btn-primary">
+
+            </form>
+        </div>
+        <!-- <script src="./js/register.js"></script> -->
+    </body>
+
+    </html>
