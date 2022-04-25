@@ -286,7 +286,11 @@ exports.postSettings = (req, res, next) => {
 
     User.findOneAndUpdate({ _id: id },
         {
+<<<<<<< HEAD
             $set: { username: req.body.username.trim(), email: req.body.email.trim() }
+=======
+            $set: { username: req.body.username.trim(), email: req.body.email.trim()}
+>>>>>>> fd5c0fd9bcc3b5008e5aab6f1b18befee117d516
         }, (err, docs) => {
             if (err) {
                 console.log(err);
