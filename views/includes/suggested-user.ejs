@@ -13,9 +13,12 @@
                 min-height: 100%" />
             </div>
             <div class="info">
-                <h3>
-                    <%=user.username%>
-                </h3>
+                <a href="/profile?id=<%=user._id.toString()%>"
+                    style="text-decoration: none;color: black;">
+                    <h3>
+                        <%=user.username%>
+                    </h3>
+                </a>
                 <small>
                     <%=user.email%>
                 </small>

@@ -52,15 +52,19 @@
 
                             <% if(notMyProfile) { %>
                                 <% if(isFriend) { %>
-                                    <a href="/unfollow?id=<%=searchedUserId%>" style="text-decoration: none;color: black;">
-                                        <label id="follow-user-side-bar" for="follow user" class="btn btn-primary">Unfollow</label>
+                                    <a href="/unfollow?id=<%=searchedUserId%>"
+                                        style="text-decoration: none;color: black;">
+                                        <label id="follow-user-side-bar" for="follow user"
+                                            class="btn btn-primary">Unfollow</label>
                                     </a>
-                                <% } else { %>
-                                    <a href="/follow?id=<%=searchedUserId%>" style="text-decoration: none;color: black;">
-                                        <label id="follow-user-side-bar" for="follow user" class="btn btn-primary">Follow</label>
-                                    </a>
-                                <% } %> 
-                                <% } %>
+                                    <% } else { %>
+                                        <a href="/follow?id=<%=searchedUserId%>"
+                                            style="text-decoration: none;color: black;">
+                                            <label id="follow-user-side-bar" for="follow user"
+                                                class="btn btn-primary">Follow</label>
+                                        </a>
+                                        <% } %>
+                                            <% } %>
                         </div>
 
 
@@ -91,7 +95,11 @@
 
 
                 </div>
-                <script src="./js/profile.js"></script>
+                <script src="../js/profile.js"></script>
+                <script src="../js/index.js"></script>
+                <script src="../js/auto-complete.js"></script>
+                <script src="../js/feeds.js"></script>
+                <script src="../js/common.js"></script>
     </body>
 
     </html>

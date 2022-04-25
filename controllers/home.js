@@ -26,14 +26,14 @@ exports.getHome = (req, res, next) => {
                     User.find({
                         $and: [
                             {
-                                "_id": {
+                                _id: {
                                     $not: {
-                                        $in: [friends]
+                                        $in: friends
                                     }
                                 }
                             },
                             {
-                                "_id": {
+                                _id: {
                                     $not: {
                                         $eq: userid
                                     }
@@ -44,6 +44,7 @@ exports.getHome = (req, res, next) => {
                         .limit(3)
                         .exec((err, suggestedUsers) => {
                             if (err) {
+                                console.log(err);
                                 res.json('Error fetching suggessted users');
                             }
                             else {
@@ -83,7 +84,7 @@ exports.getExplore = (req, res, next) => {
                 {
                     "_id": {
                         $not: {
-                            $in: [friends]
+                            $in: friends
                         }
                     }
                 },
@@ -128,7 +129,7 @@ exports.getNotifications = (req, res, next) => {
                         {
                             "_id": {
                                 $not: {
-                                    $in: [friends]
+                                    $in: friends
                                 }
                             }
                         },
@@ -192,7 +193,7 @@ exports.getBookmarks = (req, res, next) => {
                             {
                                 "_id": {
                                     $not: {
-                                        $in: [friends]
+                                        $in: friends
                                     }
                                 }
                             },
@@ -239,7 +240,24 @@ exports.getSettings = (req, res, next) => {
             console.log(err);
         }
         else {
-            User.find({})
+            User.find({
+                $and: [
+                    {
+                        "_id": {
+                            $not: {
+                                $in: docs.friends
+                            }
+                        }
+                    },
+                    {
+                        "_id": {
+                            $not: {
+                                $eq: id
+                            }
+                        }
+                    }
+                ]
+            })
                 .limit(3)
                 .exec((err, suggestedUsers) => {
                     if (err) {
@@ -334,14 +352,14 @@ exports.getProfile = (req, res, next) => {
                                 {
                                     "_id": {
                                         $not: {
-                                            $in: [friends]
+                                            $in: friends
                                         }
                                     }
                                 },
                                 {
                                     "_id": {
                                         $not: {
-                                            $eq: userId
+                                            $eq: currentUserId
                                         }
                                     }
                                 }
@@ -400,14 +418,14 @@ exports.getProfile = (req, res, next) => {
                                 {
                                     "_id": {
                                         $not: {
-                                            $in: [friends]
+                                            $in: friends
                                         }
                                     }
                                 },
                                 {
                                     "_id": {
                                         $not: {
-                                            $eq: userId
+                                            $eq: currentUserId
                                         }
                                     }
                                 }
@@ -540,7 +558,7 @@ exports.getCategory = (req, res, next) => {
                             {
                                 "_id": {
                                     $not: {
-                                        $in: [friends]
+                                        $in: friends
                                     }
                                 }
                             },
@@ -682,36 +700,45 @@ exports.likePost = (req, res, next) => {
             console.log(err);
         }
         else {
-            const notification = new Notification({
-                notificationDate: Date.now(),
-                notificationType: 'liked your post.',
-                notificationAboutUser: currentUserId
-            });
+            if (docs.postedBy != currentUserId) {
+                const notification = new Notification({
+                    notificationDate: Date.now(),
+                    notificationType: 'liked your post.',
+                    notificationAboutUser: currentUserId
+                });
 
-            notification.save((err, notidocs) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    User.updateOne({ _id: docs.postedBy }, {
-                        $push: {
-                            notifications: {
-                                _id: notidocs._id
+                notification.save((err, notidocs) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        User.updateOne({ _id: docs.postedBy }, {
+                            $push: {
+                                notifications: {
+                                    _id: notidocs._id
+                                }
                             }
-                        }
-                    }, (err, docs) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                        else {
-                            res.json({
-                                "status": "liked",
-                                "message": "Post has been liked"
-                            });
-                        }
-                    });
-                }
-            });
+                        }, (err, docs) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                res.json({
+                                    "status": "liked",
+                                    "message": "Post has been liked"
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            else
+            {
+                res.json({
+                    "status": "liked",
+                    "message": "Post has been liked"
+                });
+            }
         }
     });
 };
@@ -726,7 +753,7 @@ exports.unlikePost = (req, res, next) => {
                 $in: [currentUserId]
             }
         },
-        $inc:{
+        $inc: {
             postLikes: -1,
         }
     }, (err, docs) => {
@@ -734,36 +761,45 @@ exports.unlikePost = (req, res, next) => {
             console.log(err);
         }
         else {
-            const notification = new Notification({
-                notificationDate: Date.now(),
-                notificationType: 'unliked your post.',
-                notificationAboutUser: currentUserId
-            });
+            if (docs.postedBy != currentUserId) {
+                const notification = new Notification({
+                    notificationDate: Date.now(),
+                    notificationType: 'unliked your post.',
+                    notificationAboutUser: currentUserId
+                });
 
-            notification.save((err, notidocs) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    User.updateOne({ _id: docs.postedBy }, {
-                        $push: {
-                            notifications: {
-                                _id: notidocs._id
+                notification.save((err, notidocs) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        User.updateOne({ _id: docs.postedBy }, {
+                            $push: {
+                                notifications: {
+                                    _id: notidocs._id
+                                }
                             }
-                        }
-                    }, (err, docs) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                        else {
-                            res.json({
-                                "status": "unliked",
-                                "message": "Post has been unliked"
-                            });
-                        }
-                    });
-                }
-            });
+                        }, (err, docs) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                res.json({
+                                    "status": "unliked",
+                                    "message": "Post has been unliked"
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            else
+            {
+                res.json({
+                    "status": "unliked",
+                    "message": "Post has been unliked"
+                });
+            }
         }
     });
 };
@@ -868,15 +904,15 @@ exports.unbookmarkPost = (req, res, next) => {
     });
 };
 
-exports.deleteNotification=(req,res,next)=>{
-    const notiId=req.query.notiId;
+exports.deleteNotification = (req, res, next) => {
+    const notiId = req.query.notiId;
 
-    Notification.deleteOne({_id:notiId},(err,docs)=>{
-        if(err){
+    Notification.deleteOne({ _id: notiId }, (err, docs) => {
+        if (err) {
             console.log(err);
         }
-        else{
-            res.redirect('/notifications');
+        else {
+            res.redirect('/notification');
         }
     });
 };

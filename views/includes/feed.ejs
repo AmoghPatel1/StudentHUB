@@ -39,7 +39,7 @@
                                             return Math.floor(diff / periods.week) + " weeks ago";
                                         } else if (diff > periods.day) {
                                             return Math.floor(diff / periods.day) + " days ago";
-                                        } else if (diff > periods.hour) { 
+                                        } else if (diff > periods.hour) {
                                             return Math.floor(diff / periods.hour) + " hours ago";
                                         } else if (diff > periods.minute) {
                                             return Math.floor(diff / periods.minute) + " minutes ago";
@@ -69,7 +69,7 @@
                         <div class="action-buttons">
                             <div class="interaction-buttons" style="width: 100px;">
                                 <span>
-                                    <a href="/?postId=<%= post._id %>&id=<%= userId %>" class="like-button not-liked">
+                                    <a href="/?postId=<%= post._id %>&id=<%= userId %>" id="liked_button_<%= index %>" class="like-button not-liked">
                                         <img class="not-liked-img" src="../images/heart.png"
                                             style="width: 15px;margin: 0% 1%;align-items: center;">
                                         <img class="liked-img" src="../images/heart_liked.png"
@@ -87,7 +87,7 @@
                             </div>
                             <div class="bookmark">
                                 <span>
-                                    <a href="/?postId=<%= post._id%>" class="bookmark-button not-bookmarked">
+                                    <a href="/?postId=<%= post._id%>" id="bookmark_button_<%= index %>" class="bookmark-button not-bookmarked">
                                         <img class="not-bookmarked-img" src="../images/bookmark.png"
                                             style="width: 15px;">
                                         <img class="bookmarked-img" src="../images/bookmark_bookmarked.png"
@@ -131,6 +131,84 @@
                             </p>
                         </div>
                         <div class="comments text-muted">View All 0 comments</div>
+
+
+                        <script>
+                            $('#liked_button_<%= index %>').click(function (e) {
+                                e.preventDefault();
+                                let targetUrl = $(this).attr('href');
+                                if (this.classList.contains('liked')) {
+                                    this.classList.add('not-liked');
+                                    this.classList.remove('liked');
+                                    targetUrl = '/unlike' + targetUrl;
+                                    console.log(targetUrl);
+                                    $.ajax({
+                                        url: targetUrl,
+                                        type: 'GET',
+                                        success: function () {
+                                            console.log('Unliked');
+                                            window.location.reload();
+                                        },
+                                        error: function (err) {
+                                            console.log(err.status);
+                                        }
+                                    });
+                                }
+                                else {
+                                    this.classList.add('liked');
+                                    this.classList.remove('not-liked');
+                                    targetUrl = '/like' + targetUrl;
+                                    $.ajax({
+                                        url: targetUrl,
+                                        type: 'GET',
+                                        success: function () {
+                                            console.log('Liked');
+                                            window.location.reload();
+                                        },
+                                        error: function (err) {
+                                            console.log(err.status);
+                                        }
+                                    });
+                                }
+                            })
+
+                            $('#bookmark_button_<%= index %>').click(function (e) {
+                                e.preventDefault();
+                                let targetUrl = $(this).attr('href');
+                                if (this.classList.contains('bookmarked')) {
+                                    this.classList.add('not-bookmarked');
+                                    this.classList.remove('bookmarked');
+                                    targetUrl = '/unbookmark' + targetUrl;
+                                    $.ajax({
+                                        url: targetUrl,
+                                        type: 'GET',
+                                        success: function () {
+                                            console.log('Unbookmarked');
+                                            window.location.reload();
+                                        },
+                                        error: function (err) {
+                                            console.log(err.status);
+                                        }
+                                    });
+                                }
+                                else {
+                                    this.classList.add('bookmarked');
+                                    this.classList.remove('not-bookmarked');
+                                    targetUrl = '/bookmark' + targetUrl;
+                                    $.ajax({
+                                        url: targetUrl,
+                                        type: 'GET',
+                                        success: function () {
+                                            console.log('Bookmarked');
+                                            window.location.reload();
+                                        },
+                                        error: function (err) {
+                                            console.log(err.status);
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
 
 
 
