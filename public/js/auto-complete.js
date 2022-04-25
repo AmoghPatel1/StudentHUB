@@ -26,7 +26,8 @@ function loadData(data, element) {
     let innerElement = "";
     if (data) {
         data.forEach((item) => {
-            innerElement += `<li>${item.label}</li>`;
+            console.log(item);
+            innerElement += `<a href="/profile?id=${item.id}"><li>${item.label}</li></a>`;
         });
     }
     element.innerHTML = innerElement;
