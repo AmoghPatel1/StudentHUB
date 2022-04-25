@@ -923,3 +923,12 @@ main .container .right {
     font-size: 0.85rem;
     line-height: 1.5;
 }
+
+.settings-page-piture {
+    border-radius: 5%;
+}
+
+.settings-page-middle {
+    margin-bottom: 10%;
+    padding: 10px;
+}
