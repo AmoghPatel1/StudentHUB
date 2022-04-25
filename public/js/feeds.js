@@ -67,6 +67,6 @@ $('.bookmark-button').click(function (e) {
             }
         });
     }
-})
+});
 
 

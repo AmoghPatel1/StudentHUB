@@ -493,16 +493,42 @@ main .container .left {
     top: var(--sticky-top-left);
 }
 
-main .container .left .profile {
+main .container .middle .profile {
     padding: var(--card-padding);
     background: var(--color-white);
     border-radius: var(--card-border-radius);
     display: flex;
+    justify-content: space-between;
     align-items: center;
     column-gap: 1rem;
     width: 100%;
+    margin: 2%;
 }
 
+main .container .middle .profile .content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .container .middle .profile .content .handle{
+    margin: 0 10px;
+}
+
+main .container .middle .profile .action-buttons{
+    display: flex;
+}
+
+main .container .middle .profile .action-buttons img{
+    margin: 10px;
+    cursor: pointer;
+    transition: all 0.3 ease-in-out;
+}
+
+main .container .middle .profile .action-buttons img:hover{
+    opacity: 0.5;
+    transition: all 0.3 ease-in-out;
+}
 
 /*-------------------SIDEBAR----------------*/
 
@@ -802,6 +828,18 @@ main .container .left .profile {
 .bookmarked .bookmarked-img{
     display: inline-block;
 }
+
+.feed .edit img{
+    margin: 10px;
+    cursor: pointer;
+    transition: all 0.3 ease-in-out;
+}
+
+.feed .edit img:hover{
+    opacity: 0.5;
+    transition: all 0.3 ease-in-out;
+}
+
 
 
 

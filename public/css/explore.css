@@ -30,6 +30,7 @@
     margin: 0.5rem;
     background-color: var(--color-white);
     border-radius: var(--card-border-radius);
+    transition: all 0.3s ease-in-out;
 }
 
 .middle .categories .category img{
@@ -52,4 +53,6 @@
 .middle .categories .category:hover{
     background:var(--color-gray);
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
+

@@ -1,0 +1,109 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="../css/adminMain.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    </head>
+
+    <body>
+        <%- include('../admin/includes/nav-bar.ejs') %>
+
+            <main>
+                <div class="container">
+                    <!-- ------------------- LEFT --------------------------->
+                    <div class="left">
+                        <%- include('../admin/includes/side-bar.ejs') %>
+                    </div>
+
+
+
+                    <!-- ------------------- MIDDLE --------------------------->
+                    <div class="middle">
+
+                        <!----------------------FEEDS------------>
+
+                        <% Users.forEach((user,index)=>{ %>
+                            <a class="profile profile_<%= index %>">
+                                <div class="content">
+                                    <div class="profile-photo">
+                                        <img src="../images/<%= user.profilePic %>"
+                                            onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                                        min-width: 100%;
+                                        min-height: 100%" />
+                                    </div>
+                                    <div class="handle">
+                                        <h4>
+                                            <%= user.username %>
+                                        </h4>
+                                        <p class="text-muted">
+                                            <%= user.email %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <img class="add-admin-button" class="liked-img" src="../images/administrator.png"
+                                        style="width: 15px;align-items: center;">
+                                    <img class="delete-user-button" class="liked-img" src="../images/delete-button.png"
+                                        style="width: 15px;align-items: center;">
+                                </div>
+                            </a>
+                            <script>
+                                $('.profile_<%= index %> .add-admin-button').click(function (e) {
+                                    e.preventDefault();
+                                    if (confirm('Do you want to make this user an admin?') === true) {
+                                        let targetUrl = '/admin/makeAdmin?userId=<%= user._id %>';
+                                        $.ajax({
+                                            url: targetUrl,
+                                            type: 'GET',
+                                            success: function () {
+                                                console.log('Made admin');
+                                                window.location.reload();
+                                            },
+                                            error: function (err) {
+                                                console.log(err.status);
+                                            }
+                                        });
+                                    }
+                                    else {
+
+                                    }
+                                });
+
+                                $('.profile_<%= index %> .delete-user-button').click(function (e) {
+                                    e.preventDefault();
+                                    if (confirm('Do you want to delete this user?') === true) {
+                                        let targetUrl = '/admin/deleteUser?userId=<%= user._id %>';
+                                        $.ajax({
+                                            url: targetUrl,
+                                            type: 'GET',
+                                            success: function () {
+                                                console.log('Made admin');
+                                                window.location.reload();
+                                            },
+                                            error: function (err) {
+                                                console.log(err.status);
+                                            }
+                                        });
+                                    }
+                                    else {
+
+                                    }
+                                });
+
+
+                            </script>
+                            <% }); %>
+                    </div>
+
+
+
+
+                    <!-- ------------------- RIGHT --------------------------->
+                    <div class="right">
+
+                    </div>
+                </div>
+            </main>
+
+
+            </div>
+            <script src="../js/admin.js"></script>
+            <%- include('../includes/end.ejs') %>

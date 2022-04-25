@@ -36,7 +36,10 @@ const UserSchema = new Schema({
     notifications: [{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Notification'
-    }]
+    }],
+    isAdmin:{
+        type:Boolean
+    }
 });
 
 
