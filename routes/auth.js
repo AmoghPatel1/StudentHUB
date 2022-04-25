@@ -24,4 +24,13 @@ router.post('/details',Upload.upload.single('file'),authController.postDetails);
 
 router.post('/logout',authController.isAuth,authController.postLogOut);
 
+router.get('/forgotpassword',authController.getForgotPassword);
+
+router.post('/get-email', authController.postForgotPassword);
+
+router.post('/verifyotp', authController.postVerifyOTP);
+
+router.post('/password-changed', authController.postResetPassword);
+
+
 module.exports=router;
