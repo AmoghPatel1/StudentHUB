@@ -5,9 +5,11 @@ const Post = require('../models/Post');
 const Notification = require('../models/Notification');
 
 exports.getHome = (req, res, next) => {
-    getBasicUserDetails(req, (userid, username, email, profilePic, bookmarks) => {
-        Post.find({}).populate(
-            {
+    getBasicUserDetails(req, (userid, username, email, profilePic, bookmarks, friends) => {
+        Post.find({
+        })
+            .sort({ postDate: -1 })
+            .populate({
                 path: 'postedBy',
             })
             .populate({
@@ -21,24 +23,51 @@ exports.getHome = (req, res, next) => {
                     res.json('Error fetching posts');
                 }
                 else {
-                    User.find({})
+                    User.find({
+                        $and: [
+                            {
+                                "_id": {
+                                    $not: {
+                                        $in: [friends]
+                                    }
+                                }
+                            },
+                            {
+                                "_id": {
+                                    $not: {
+                                        $eq: userid
+                                    }
+                                }
+                            }
+                        ]
+                    })
                         .limit(3)
                         .exec((err, suggestedUsers) => {
                             if (err) {
                                 res.json('Error fetching suggessted users');
                             }
                             else {
-                                res.render('home/home', {
-                                    pageTitle: 'Home',
-                                    path: '/home',
-                                    userId: userid,
-                                    username: username,
-                                    email: email,
-                                    profilePic: profilePic,
-                                    posts: posts,
-                                    bookmarks: bookmarks,
-                                    suggestedUsers: suggestedUsers
-                                });
+                                Post.find({})
+                                    .sort({ postLikes: -1 })
+                                    .limit(6)
+                                    .populate(
+                                        {
+                                            path: 'postedBy',
+                                        })
+                                    .exec((err, trendingPosts) => {
+                                        res.render('home/home', {
+                                            pageTitle: 'Home',
+                                            path: '/home',
+                                            userId: userid,
+                                            username: username,
+                                            email: email,
+                                            profilePic: profilePic,
+                                            posts: posts,
+                                            bookmarks: bookmarks,
+                                            suggestedUsers: suggestedUsers,
+                                            trendingPosts: trendingPosts
+                                        });
+                                    });
                             }
                         });
                 }
@@ -48,8 +77,25 @@ exports.getHome = (req, res, next) => {
 };
 
 exports.getExplore = (req, res, next) => {
-    getBasicUserDetails(req, (userid, username, email, profilePic) => {
-        User.find({})
+    getBasicUserDetails(req, (userid, username, email, profilePic, bookmarks, friends) => {
+        User.find({
+            $and: [
+                {
+                    "_id": {
+                        $not: {
+                            $in: [friends]
+                        }
+                    }
+                },
+                {
+                    "_id": {
+                        $not: {
+                            $eq: userid
+                        }
+                    }
+                }
+            ]
+        })
             .limit(3)
             .exec((err, suggestedUsers) => {
                 if (err) {
@@ -71,13 +117,31 @@ exports.getExplore = (req, res, next) => {
 };
 
 exports.getNotifications = (req, res, next) => {
-    getBasicUserDetails(req, (userid, username, email, profilePic) => {
+    getBasicUserDetails(req, (userid, username, email, profilePic, bookmarks, friends) => {
         User.findOne({ _id: userid }).populate({ path: 'notifications', populate: { path: 'notificationAboutUser' } }).exec((err, user) => {
             if (err) {
                 console.log(err);
             }
             else {
-                User.find({})
+                console.log(user.notifications);
+                User.find({
+                    $and: [
+                        {
+                            "_id": {
+                                $not: {
+                                    $in: [friends]
+                                }
+                            }
+                        },
+                        {
+                            "_id": {
+                                $not: {
+                                    $eq: userid
+                                }
+                            }
+                        }
+                    ]
+                })
                     .limit(3)
                     .exec((err, suggestedUsers) => {
                         if (err) {
@@ -103,7 +167,7 @@ exports.getNotifications = (req, res, next) => {
 
 exports.getBookmarks = (req, res, next) => {
 
-    getBasicUserDetails(req, (userid, username, email, profilePic, bookmarks) => {
+    getBasicUserDetails(req, (userid, username, email, profilePic, bookmarks, friends) => {
         User.findOne({ _id: userid }).populate(
             {
                 path: 'booksmarks',
@@ -124,7 +188,24 @@ exports.getBookmarks = (req, res, next) => {
                     console.log(err);
                 }
                 else {
-                    User.find({})
+                    User.find({
+                        $and: [
+                            {
+                                "_id": {
+                                    $not: {
+                                        $in: [friends]
+                                    }
+                                }
+                            },
+                            {
+                                "_id": {
+                                    $not: {
+                                        $eq: userid
+                                    }
+                                }
+                            }
+                        ]
+                    })
                         .limit(3)
                         .exec((err, suggestedUsers) => {
                             if (err) {
@@ -224,7 +305,7 @@ exports.getPostModal = (req, res, next) => {
 
 exports.getProfile = (req, res, next) => {
     const userId = req.query.id;
-    getBasicUserDetails(req, (currentUserId, username, email, profilePic, bookmarks) => {
+    getBasicUserDetails(req, (currentUserId, username, email, profilePic, bookmarks, friends) => {
         if (userId === currentUserId.toString()) {
             User.findOne({ _id: userId }).
                 populate(
@@ -249,7 +330,24 @@ exports.getProfile = (req, res, next) => {
                         console.log(err);
                     }
                     else {
-                        User.find({})
+                        User.find({
+                            $and: [
+                                {
+                                    "_id": {
+                                        $not: {
+                                            $in: [friends]
+                                        }
+                                    }
+                                },
+                                {
+                                    "_id": {
+                                        $not: {
+                                            $eq: userId
+                                        }
+                                    }
+                                }
+                            ]
+                        })
                             .limit(3)
                             .exec((err, suggestedUsers) => {
                                 if (err) {
@@ -298,7 +396,24 @@ exports.getProfile = (req, res, next) => {
                         console.log(err);
                     }
                     else {
-                        User.find({})
+                        User.find({
+                            $and: [
+                                {
+                                    "_id": {
+                                        $not: {
+                                            $in: [friends]
+                                        }
+                                    }
+                                },
+                                {
+                                    "_id": {
+                                        $not: {
+                                            $eq: userId
+                                        }
+                                    }
+                                }
+                            ]
+                        })
                             .limit(3)
                             .exec((err, suggestedUsers) => {
                                 if (err) {
@@ -322,7 +437,7 @@ exports.getProfile = (req, res, next) => {
                                             notMyProfile: true,
                                             isFriend: isFriend,
                                             bookmarks: bookmarks,
-                                            suggestedUsers:suggestedUsers
+                                            suggestedUsers: suggestedUsers
                                         });
                                     });
                                 }
@@ -405,7 +520,7 @@ exports.searchAutocomplete = (req, res, next) => {
 exports.getCategory = (req, res, next) => {
     const category = req.query.category;
 
-    getBasicUserDetails(req, (userid, username, email, profilePic, bookmarks) => {
+    getBasicUserDetails(req, (userid, username, email, profilePic, bookmarks, friends) => {
         Post.find({ postCategory: category }).populate(
             {
                 path: 'postedBy',
@@ -421,7 +536,24 @@ exports.getCategory = (req, res, next) => {
                     res.json('Error fetching posts');
                 }
                 else {
-                    User.find({})
+                    User.find({
+                        $and: [
+                            {
+                                "_id": {
+                                    $not: {
+                                        $in: [friends]
+                                    }
+                                }
+                            },
+                            {
+                                "_id": {
+                                    $not: {
+                                        $eq: userid
+                                    }
+                                }
+                            }
+                        ]
+                    })
                         .limit(3)
                         .exec((err, suggestedUsers) => {
                             if (err) {
@@ -437,7 +569,7 @@ exports.getCategory = (req, res, next) => {
                                     profilePic: profilePic,
                                     posts: posts,
                                     bookmarks: bookmarks,
-                                    suggestedUsers:suggestedUsers
+                                    suggestedUsers: suggestedUsers
                                 });
                             }
                         });
@@ -542,15 +674,45 @@ exports.likePost = (req, res, next) => {
             postLikedBy: {
                 _id: [currentUserId]
             }
+        },
+        $inc: {
+            postLikes: 1,
         }
     }, (err, docs) => {
         if (err) {
             console.log(err);
         }
         else {
-            res.json({
-                "status": "liked",
-                "message": "Post has been liked"
+            const notification = new Notification({
+                notificationDate: Date.now(),
+                notificationType: 'liked your post.',
+                notificationAboutUser: currentUserId
+            });
+
+            notification.save((err, notidocs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    console.log(docs);
+                    User.updateOne({ _id: docs.postedBy }, {
+                        $push: {
+                            notifications: {
+                                _id: notidocs._id
+                            }
+                        }
+                    }, (err, docs) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({
+                                "status": "liked",
+                                "message": "Post has been liked"
+                            });
+                        }
+                    });
+                }
             });
         }
     });
@@ -571,9 +733,36 @@ exports.unlikePost = (req, res, next) => {
             console.log(err);
         }
         else {
-            res.json({
-                "status": "unliked",
-                "message": "Post has been unliked"
+            const notification = new Notification({
+                notificationDate: Date.now(),
+                notificationType: 'unliked your post.',
+                notificationAboutUser: currentUserId
+            });
+
+            notification.save((err, notidocs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                    User.updateOne({ _id: docs.postedBy }, {
+                        $push: {
+                            notifications: {
+                                _id: notidocs._id
+                            }
+                        }
+                    }, (err, docs) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({
+                                "status": "unliked",
+                                "message": "Post has been unliked"
+                            });
+                        }
+                    });
+                }
             });
         }
     });
@@ -594,9 +783,36 @@ exports.bookmarkPost = (req, res, next) => {
             console.log(err);
         }
         else {
-            res.json({
-                "status": "bookmarked",
-                "message": "Post has been bookmarked"
+            const notification = new Notification({
+                notificationDate: Date.now(),
+                notificationType: 'bookmarked your post.',
+                notificationAboutUser: currentUserId
+            });
+
+            notification.save((err, notidocs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                    User.updateOne({ _id: docs.postedBy }, {
+                        $push: {
+                            notifications: {
+                                _id: notidocs._id
+                            }
+                        }
+                    }, (err, docs) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({
+                                "status": "bookmarked",
+                                "message": "Post has been bookmarked"
+                            });
+                        }
+                    });
+                }
             });
         }
     });
@@ -617,9 +833,36 @@ exports.unbookmarkPost = (req, res, next) => {
             console.log(err);
         }
         else {
-            res.json({
-                "status": "Unbookmarked",
-                "message": "Post has been unbookmarked"
+            const notification = new Notification({
+                notificationDate: Date.now(),
+                notificationType: 'unbookmarked your post.',
+                notificationAboutUser: currentUserId
+            });
+
+            notification.save((err, notidocs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                    User.updateOne({ _id: docs.postedBy }, {
+                        $push: {
+                            notifications: {
+                                _id: notidocs._id
+                            }
+                        }
+                    }, (err, docs) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({
+                                "status": "Unbookmarked",
+                                "message": "Post has been unbookmarked"
+                            });
+                        }
+                    });
+                }
             });
         }
     });
@@ -638,7 +881,8 @@ const getBasicUserDetails = (req, cb) => {
             let email = docs.email.trim();
             let profilePic = docs.profilePic.trim();
             let bookmarks = docs.booksmarks;
-            cb(userid, username, email, profilePic, bookmarks);
+            let friends = docs.friends;
+            cb(userid, username, email, profilePic, bookmarks, friends);
         }
     });
 };

@@ -24,42 +24,18 @@
                         <div class="middle">
                             <h3 class="trending-issues">Trending issues</h3>
                             <div class="stories">
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="https://thumbs.dreamstime.com/b/lost-identity-concept-person-blank-face-outdoors-spirituality-ecological-psychology-81011354.jpg">
+                                <% trendingPosts.forEach(post=>{ %>
+                                    <div class="story"
+                                        style="background:url('../images/<%=post.postImage%>') no-repeat center center/cover;">
+                                        <div class="profile-photo">
+                                            <img src="../images/<%= post.postedBy.profilePic %> ">
+                                        </div>
+                                        <a href="/profile?id=<%=post.postedBy._id.toString()%>"
+                                            style="text-decoration: none;color: white;z-index: 50;">
+                                                <%= post.postedBy.username %>
+                                        </a>
                                     </div>
-                                    <p class="name">Your story</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="https://thumbs.dreamstime.com/b/lost-identity-concept-person-blank-face-outdoors-spirituality-ecological-psychology-81011354.jpg">
-                                    </div>
-                                    <p class="name">User 1</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="https://thumbs.dreamstime.com/b/lost-identity-concept-person-blank-face-outdoors-spirituality-ecological-psychology-81011354.jpg">
-                                    </div>
-                                    <p class="name">User 2</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="https://thumbs.dreamstime.com/b/lost-identity-concept-person-blank-face-outdoors-spirituality-ecological-psychology-81011354.jpg">
-                                    </div>
-                                    <p class="name">User 3</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="https://thumbs.dreamstime.com/b/lost-identity-concept-person-blank-face-outdoors-spirituality-ecological-psychology-81011354.jpg">
-                                    </div>
-                                    <p class="name">User 4</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="https://thumbs.dreamstime.com/b/lost-identity-concept-person-blank-face-outdoors-spirituality-ecological-psychology-81011354.jpg">
-                                    </div>
-                                    <p class="name">User 5</p>
-                                </div>
+                                    <% }); %>
                             </div>
                             <!-- --------------END OF STORIES-------------->
 
@@ -75,7 +51,7 @@
                             <!----------------------FEEDS------------>
 
 
-                            <%- include('../includes/feed.ejs') %> 
+                            <%- include('../includes/feed.ejs') %>
 
                         </div>
 
@@ -96,6 +72,6 @@
 
                 </div>
 
-                
+
                 <script src="./js/index.js"></script>
                 <%- include('../includes/end.ejs') %>

@@ -11,6 +11,7 @@ $('.like-button').click(function (e) {
             type: 'GET',
             success: function () {
                 console.log('Unliked');
+                window.location.reload();
             },
             error: function (err) {
                 console.log(err.status);
@@ -26,6 +27,7 @@ $('.like-button').click(function (e) {
             type: 'GET',
             success: function () {
                 console.log('Liked');
+                window.location.reload();
             },
             error: function (err) {
                 console.log(err.status);
@@ -46,6 +48,7 @@ $('.bookmark-button').click(function (e) {
             type: 'GET',
             success: function () {
                 console.log('Unbookmarked');
+                window.location.reload();
             },
             error: function (err) {
                 console.log(err.status);
@@ -61,6 +64,7 @@ $('.bookmark-button').click(function (e) {
             type: 'GET',
             success: function () {
                 console.log('Bookmarked');
+                window.location.reload();
             },
             error: function (err) {
                 console.log(err.status);

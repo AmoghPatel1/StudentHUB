@@ -34,7 +34,11 @@ const Post = new Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
-    }]
+    }],
+    postLikes:{
+        type:Number,
+        default:0,
+    }
 });
 
 Post.statics.savePost = function(newPost) {
