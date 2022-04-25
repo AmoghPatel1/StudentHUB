@@ -47,8 +47,6 @@ router.get('/bookmark',authController.isAuth,homeController.bookmarkPost);
 
 router.get('/unbookmark',authController.isAuth,homeController.unbookmarkPost);
 
-router.get('/post-modal',authController.isAuth,homeController.getPostModal);
-
 router.get('/category',authController.isAuth,homeController.getCategory);
 
 router.get('/delete-notification',authController.isAuth,homeController.deleteNotification);

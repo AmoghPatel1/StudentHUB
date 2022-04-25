@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 const cookieParser = require('cookie-parser');
 
-const connection = require('./util/connection');
+const connection = require('./util/Connection');
 
 const mongoref = connection.mongoref;
 
