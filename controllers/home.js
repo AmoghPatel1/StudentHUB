@@ -286,7 +286,7 @@ exports.postSettings = (req, res, next) => {
 
     User.findOneAndUpdate({ _id: id },
         {
-            $set: { username: req.body.username.trim(), email: req.body.email.trim(), password: req.body.password.trim }
+            $set: { username: req.body.username.trim(), email: req.body.email.trim()}
         }, (err, docs) => {
             if (err) {
                 console.log(err);
