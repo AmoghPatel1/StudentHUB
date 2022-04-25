@@ -732,8 +732,7 @@ exports.likePost = (req, res, next) => {
                     }
                 });
             }
-            else
-            {
+            else {
                 res.json({
                     "status": "liked",
                     "message": "Post has been liked"
@@ -793,8 +792,7 @@ exports.unlikePost = (req, res, next) => {
                     }
                 });
             }
-            else
-            {
+            else {
                 res.json({
                     "status": "unliked",
                     "message": "Post has been unliked"
@@ -916,6 +914,59 @@ exports.deleteNotification = (req, res, next) => {
         }
     });
 };
+
+exports.searchByName = (req, res, next) => {
+    const name = req.query.username;
+    var regex = new RegExp(name, 'i');
+    var userFilter = User.find({ username: regex }).sort({ "updated_at": -1 }).sort({ "created_at": -1 }).limit(20);
+    userFilter.exec((err, data) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            getBasicUserDetails(req, (userid, username, email, profilePic, bookmarks, friends) => {
+                User.find({
+                    $and: [
+                        {
+                            _id: {
+                                $not: {
+                                    $in: friends
+                                }
+                            }
+                        },
+                        {
+                            _id: {
+                                $not: {
+                                    $eq: userid
+                                }
+                            }
+                        }
+                    ]
+                })
+                    .limit(3)
+                    .exec((err, suggestedUsers) => {
+                        if (err) {
+                            console.log(err);
+                            res.json('Error fetching suggessted users');
+                        }
+                        else {
+                            res.render('home/search', {
+                                pageTitle: 'Search',
+                                path: '',
+                                userId: userid,
+                                username: username,
+                                email: email,
+                                profilePic: profilePic,
+                                bookmarks: bookmarks,
+                                suggestedUsers: suggestedUsers,
+                                Users:data
+                            });
+                        }
+                    });
+            })
+        };
+    });
+}
 
 const getBasicUserDetails = (req, cb) => {
     const token = req.cookies.jwt;
