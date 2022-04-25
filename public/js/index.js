@@ -32,8 +32,6 @@ document.getElementById('create-issue-nav-bar').addEventListener('click',()=>{
     openModal();
 });
 
-document
-
 document.getElementById('profile-photo-nav').addEventListener('click',()=>{
     console.log('Profile photo clicked');
     if(document.getElementById('profile-menu').classList.contains('hidden-popup')){

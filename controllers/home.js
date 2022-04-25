@@ -313,13 +313,6 @@ exports.getMeetTheTeam = (req, res, next) => {
     });
 };
 
-exports.getPostModal = (req, res, next) => {
-    res.render('home/post-modal.ejs', {
-        pageTitle: 'Post',
-        path: '/post-modal'
-    });
-};
-
 exports.getProfile = (req, res, next) => {
     const userId = req.query.id;
     getBasicUserDetails(req, (currentUserId, username, email, profilePic, bookmarks, friends) => {

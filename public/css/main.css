@@ -255,6 +255,7 @@ img {
 
 .modal-close{
     display: none;
+    transition:visibility 3s ease-in-out;
 }
 
 #add_file_button{
