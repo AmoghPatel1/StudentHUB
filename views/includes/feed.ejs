@@ -69,25 +69,20 @@
                         <div class="action-buttons">
                             <div class="interaction-buttons" style="width: 100px;">
                                 <span>
-                                    <a href="/?postId=<%= post._id %>&id=<%= userId %>" id="liked_button_<%= index %>" class="like-button not-liked">
+                                    <a href="/?postId=<%= post._id %>&id=<%= userId %>" id="liked_button_<%= index %>"
+                                        class="like-button not-liked">
                                         <img class="not-liked-img" src="../images/heart.png"
                                             style="width: 15px;margin: 0% 1%;align-items: center;">
                                         <img class="liked-img" src="../images/heart_liked.png"
                                             style="width: 15px;margin: 0% 1%;align-items: center;">
                                     </a>
                                 </span>
-                                <span>
-                                    <img src="../images/speech-bubble.png"
-                                        style="width: 15px;margin: 0% 10%;cursor: pointer;;align-items: center;display:inline-block">
-                                </span>
-                                <span>
-                                    <img src="../images/share.png"
-                                        style="width: 15px;margin: 0% 0%;cursor: pointer;;align-items: center;display:inline-block">
-                                </span>
+                                
                             </div>
                             <div class="bookmark">
                                 <span>
-                                    <a href="/?postId=<%= post._id%>" id="bookmark_button_<%= index %>" class="bookmark-button not-bookmarked">
+                                    <a href="/?postId=<%= post._id%>" id="bookmark_button_<%= index %>"
+                                        class="bookmark-button not-bookmarked">
                                         <img class="not-bookmarked-img" src="../images/bookmark.png"
                                             style="width: 15px;">
                                         <img class="bookmarked-img" src="../images/bookmark_bookmarked.png"
@@ -128,8 +123,28 @@
                                 </b>
                                 <%= post.postDescription %>
                             </p>
+
+                            <input type="text" id="comment-box" placeholder="Enter comment">
+                            <button class="btn btn-primary" id="post">Post Comment</button>
+                            <ul id="unordered">
+
+                            </ul>
+
+                            <script>
+                                var post = document.getElementById("post");
+                                post.addEventListener("click", function () {
+                                    var commentBoxValue = document.getElementById("comment-box").value;
+
+                                    var li = document.createElement("li");
+                                    var text = document.createTextNode(commentBoxValue);
+                                    li.appendChild(text);
+                                    document.getElementById("unordered").appendChild(li);
+
+                                });
+                            </script>
+
                         </div>
-                        <div class="comments text-muted">View All 0 comments</div>
+
 
 
                         <script>
