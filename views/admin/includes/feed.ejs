@@ -39,7 +39,7 @@
                                             return Math.floor(diff / periods.week) + " weeks ago";
                                         } else if (diff > periods.day) {
                                             return Math.floor(diff / periods.day) + " days ago";
-                                        } else if (diff > periods.hour) { 
+                                        } else if (diff > periods.hour) {
                                             return Math.floor(diff / periods.hour) + " hours ago";
                                         } else if (diff > periods.minute) {
                                             return Math.floor(diff / periods.minute) + " minutes ago";
@@ -54,9 +54,10 @@
                             </small>
                         </div>
                     </div>
-                    <span class="edit">
-                        <i class="uil uil-ellipsis-h"></i>
-                    </span>
+                    <a id="delete-post-button" href="/admin/deletePost?postId=<%=post._id%>">
+                        <img class="liked-img" src="../images/delete-button.png"
+                            style="width: 15px;align-items: center;">
+                    </a>
 
                 </div>
 
@@ -100,10 +101,31 @@
             </div>
             <% }); %>
 
-            <% } else { %>
+                <% } else { %>
 
-            <% } %>
+                    <% } %>
 
 
+                        <script>
+                            $('#delete-post-button').click(function (e) {
+                                e.preventDefault();
+                                if (confirm('Do you want to delete this post?') === true) {
+                                    let targetUrl = $(this).attr('href');
+                                    $.ajax({
+                                        url: targetUrl,
+                                        type: 'GET',
+                                        success: function () {
+                                            console.log('Delete post');
+                                            window.location.reload();
+                                        },
+                                        error: function (err) {
+                                            console.log(err.status);
+                                        }
+                                    });
+                                }
+                                else {
 
+                                }
+                            });
+                        </script>
 </div>

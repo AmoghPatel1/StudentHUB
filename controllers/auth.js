@@ -402,10 +402,6 @@ exports.isAuth = (req, res, next) => {
 
         const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
 
-        // User.fetchUserById(verifyUser._id,(docs)=>{
-        //     console.log(docs);
-        // });
-
         next();
     } catch (error) {
         res.redirect('/login');

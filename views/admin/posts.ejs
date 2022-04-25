@@ -1,0 +1,42 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="../css/adminMain.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    </head>
+
+    <body>
+        <%- include('../admin/includes/nav-bar.ejs') %>
+
+            <main>
+                <div class="container">
+                    <!-- ------------------- LEFT --------------------------->
+                    <div class="left">
+                        <%- include('../admin/includes/side-bar.ejs') %>
+                    </div>
+
+
+
+                    <!-- ------------------- MIDDLE --------------------------->
+                    <div class="middle">
+
+                        <!----------------------FEEDS------------>
+
+                        <%- include('../admin/includes/feed.ejs') %>
+
+                    </div>
+
+
+
+
+                    <!-- ------------------- RIGHT --------------------------->
+                    <div class="right">
+
+                    </div>
+                </div>
+            </main>
+
+
+            </div>
+
+
+            <script src="../js/admin.js"></script>
+            <%- include('../includes/end.ejs') %>
