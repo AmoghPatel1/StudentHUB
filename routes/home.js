@@ -53,4 +53,6 @@ router.get('/category',authController.isAuth,homeController.getCategory);
 
 router.get('/delete-notification',authController.isAuth,homeController.deleteNotification);
 
+router.get('/search',authController.isAuth,homeController.searchByName);
+
 module.exports=router;

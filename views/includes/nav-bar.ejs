@@ -23,11 +23,14 @@
                 <span><b>Settings</b></span>
             </a>
         </div>
-        <div class="search-bar">
-            <i class="uil uil-search"></i>
-            <input id="search-bar-input" type="search" placeholder="Search for issues">
-            <ul class="autocomplete-list" id="country-list">
-            </ul>
+        <div >
+            <form class="search-bar" action="/search" method="get">
+                <i class="uil uil-search"></i>
+                <input id="search-bar-input" type="search" name="username" placeholder="Search for issues">
+                <input type="hidden" value="Submit">
+                <ul class="autocomplete-list" id="country-list">
+                </ul>
+            </form>
         </div>
         <div class="create">
             <label id="create-issue-nav-bar" class="btn btn-primary" for="#create-post">Create</label>
