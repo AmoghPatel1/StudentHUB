@@ -51,4 +51,6 @@ router.get('/post-modal',authController.isAuth,homeController.getPostModal);
 
 router.get('/category',authController.isAuth,homeController.getCategory);
 
+router.get('/delete-notification',authController.isAuth,homeController.deleteNotification);
+
 module.exports=router;

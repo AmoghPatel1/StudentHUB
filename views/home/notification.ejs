@@ -29,22 +29,76 @@
 
                             <div class="notifications">
 
-                                <% notifications.forEach(notification=>{ %>
-                                    <div class="notification">
-                                        <div class="profile-photo">
-                                            <img src="./images/<%=notification.notificationAboutUser.profilePic%>"
-                                                alt="">
+                                <% notifications.forEach((notification,index)=>{ %>
+                                    <div class="notification" id="notification_<%= index %>"
+                                        style="display: flex;justify-content: space-between;">
+                                        <div style="display: flex;">
+                                            <div class="profile-photo">
+                                                <img src="./images/<%=notification.notificationAboutUser.profilePic%>"
+                                                    alt="">
+                                            </div>
+                                            <div class="notification-body" style="margin: 0px 10px;">
+                                                <b>
+                                                    <%= notification.notificationAboutUser.username %>
+                                                </b>
+                                                <%= notification.notificationType %>
+                                                    <small class="text-muted" id="time-stamp" style="display: block;">
+                                                        <script>
+                                                            window.addEventListener('load', (event) => {
+                                                            });
+                                                            var periods = {
+                                                                month: 30 * 24 * 60 * 60 * 1000,
+                                                                week: 7 * 24 * 60 * 60 * 1000,
+                                                                day: 24 * 60 * 60 * 1000,
+                                                                hour: 60 * 60 * 1000,
+                                                                minute: 60 * 1000
+                                                            };
+
+                                                            function formatTime(diff) {
+
+                                                                if (diff > periods.month) {
+                                                                    // it was at least a month ago
+                                                                    return Math.floor(diff / periods.month) + " months ago";
+                                                                } else if (diff > periods.week) {
+                                                                    return Math.floor(diff / periods.week) + " weeks ago";
+                                                                } else if (diff > periods.day) {
+                                                                    return Math.floor(diff / periods.day) + " days ago";
+                                                                } else if (diff > periods.hour) {
+                                                                    return Math.floor(diff / periods.hour) + " hours ago";
+                                                                } else if (diff > periods.minute) {
+                                                                    return Math.floor(diff / periods.minute) + " minutes ago";
+                                                                }
+                                                                return "Just now";
+                                                            }
+
+                                                            document.querySelector('#notification_<%= index %> #time-stamp').innerHTML = formatTime(Date.now() - new Date('<%=notification.notificationDate%>').getTime());
+                                                        </script>
+                                                    </small>
+                                            </div>
                                         </div>
-                                        <div class="notification-body">
-                                            <b>
-                                                <%= notification.notificationAboutUser.username %>
-                                            </b>
-                                            <%= notification.notificationType %> .
-                                                <small class="text-muted">
-                                                    15 mins ago
-                                                </small>
+                                        <div class="action-buttons">
+                                            <img class="delete-notification-button" class="liked-img"
+                                                src="../images/delete-button.png"
+                                                style="width: 15px;align-items: center;justify-content: center;">
                                         </div>
                                     </div>
+                                    <script>
+                                        $('#notification_<%= index %> .delete-notification-button').click(function (e) {
+                                            e.preventDefault();
+                                            let targetUrl = '/delete-notification?notiId=<%= notification._id %>';
+                                            $.ajax({
+                                                url: targetUrl,
+                                                type: 'GET',
+                                                success: function () {
+                                                    console.log('Delete notification');
+                                                    window.location.reload();
+                                                },
+                                                error: function (err) {
+                                                    console.log(err.status);
+                                                }
+                                            });
+                                        });
+                                    </script>
                                     <% }); %>
                             </div>
                         </div>

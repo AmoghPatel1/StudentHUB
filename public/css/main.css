@@ -602,6 +602,17 @@ main .container .left .profile {
     box-shadow: 0 0 2rem hsb(var(--color-primary), 75%, 60% 25%);
 }
 
+.middle .notifications .action-buttons{
+    margin: 10px;
+    cursor: pointer;
+    transition: all 0.3 ease-in-out;
+}
+
+.middle .notifications .action-buttons:hover{
+    opacity: 0.5;
+    transition: all 0.3 ease-in-out;
+}
+
 .left .notification-popup small {
     display: block;
 }

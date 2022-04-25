@@ -123,7 +123,6 @@ exports.getNotifications = (req, res, next) => {
                 console.log(err);
             }
             else {
-                console.log(user.notifications);
                 User.find({
                     $and: [
                         {
@@ -669,7 +668,7 @@ exports.likePost = (req, res, next) => {
     const postId = req.query.postId;
     const currentUserId = getUserId(req);
 
-    Post.updateOne({ _id: postId }, {
+    Post.findOneAndUpdate({ _id: postId }, {
         $addToSet: {
             postLikedBy: {
                 _id: [currentUserId]
@@ -694,7 +693,6 @@ exports.likePost = (req, res, next) => {
                     console.log(err);
                 }
                 else {
-                    console.log(docs);
                     User.updateOne({ _id: docs.postedBy }, {
                         $push: {
                             notifications: {
@@ -722,11 +720,14 @@ exports.unlikePost = (req, res, next) => {
     const postId = req.query.postId;
     const currentUserId = getUserId(req);
 
-    Post.updateOne({ _id: postId }, {
+    Post.findOneAndUpdate({ _id: postId }, {
         $pull: {
             postLikedBy: {
                 $in: [currentUserId]
             }
+        },
+        $inc:{
+            postLikes: -1,
         }
     }, (err, docs) => {
         if (err) {
@@ -744,7 +745,6 @@ exports.unlikePost = (req, res, next) => {
                     console.log(err);
                 }
                 else {
-
                     User.updateOne({ _id: docs.postedBy }, {
                         $push: {
                             notifications: {
@@ -772,7 +772,7 @@ exports.bookmarkPost = (req, res, next) => {
     const postId = req.query.postId;
     const currentUserId = getUserId(req);
 
-    User.updateOne({ _id: currentUserId }, {
+    User.findOneAndUpdate({ _id: currentUserId }, {
         $addToSet: {
             booksmarks: {
                 _id: [postId]
@@ -822,7 +822,7 @@ exports.unbookmarkPost = (req, res, next) => {
     const postId = req.query.postId;
     const currentUserId = getUserId(req);
 
-    User.updateOne({ _id: currentUserId }, {
+    User.findOneAndUpdate({ _id: currentUserId }, {
         $pull: {
             booksmarks: {
                 $in: [postId]
@@ -864,6 +864,19 @@ exports.unbookmarkPost = (req, res, next) => {
                     });
                 }
             });
+        }
+    });
+};
+
+exports.deleteNotification=(req,res,next)=>{
+    const notiId=req.query.notiId;
+
+    Notification.deleteOne({_id:notiId},(err,docs)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.redirect('/notifications');
         }
     });
 };
