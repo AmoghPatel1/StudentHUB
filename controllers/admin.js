@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const Post = require('../models/Post');
+const Notification = require('../models/Notification');
+const UserOTPVerification = require('../models/UserOTPVerification');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -30,9 +32,9 @@ exports.postLogin = (req, res, next) => {
     }
     else {
         User.findOne({
-            username:username
-        },(err,docs)=>{
-            if(err){
+            username: username
+        }, (err, docs) => {
+            if (err) {
                 res.render('admin/login', {
                     pageTitle: 'Admin login',
                     username: '',
@@ -41,8 +43,8 @@ exports.postLogin = (req, res, next) => {
                     infoSignIn: '',
                 });
             }
-            else{
-                if(docs===null){
+            else {
+                if (docs === null) {
                     res.render('admin/login', {
                         pageTitle: 'Admin login',
                         username: '',
@@ -51,9 +53,9 @@ exports.postLogin = (req, res, next) => {
                         infoSignIn: '',
                     });
                 }
-                else{
+                else {
                     bcrypt.compare(password, docs.password, (err, result) => {
-                        if(err){
+                        if (err) {
                             res.render('admin/login', {
                                 pageTitle: 'Admin login',
                                 username: '',
@@ -62,8 +64,8 @@ exports.postLogin = (req, res, next) => {
                                 infoSignIn: '',
                             });
                         }
-                        else{
-                            if(result&&docs.isAdmin===true){
+                        else {
+                            if (result && docs.isAdmin === true) {
                                 const token = docs.generateAuthToken();
                                 res.cookie("jwt", token, {
                                     expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
@@ -71,7 +73,7 @@ exports.postLogin = (req, res, next) => {
                                 });
                                 res.redirect('/admin/posts');
                             }
-                            else{
+                            else {
                                 res.render('admin/login', {
                                     pageTitle: 'Admin login',
                                     username: '',
@@ -113,35 +115,56 @@ exports.getPosts = (req, res, next) => {
         });
 }
 
-exports.deletePost = (req,res,next)=>{
-    const postId=req.query.postId;
-    Post.deleteOne({_id:postId},(err,docs)=>{
-        if(err){
+exports.deletePost = (req, res, next) => {
+    const postId = req.query.postId;
+    Post.deleteOne({ _id: postId }, (err, docs) => {
+        if (err) {
             console.log(err);
         }
         res.redirect('/admin/posts');
     });
 };
 
-exports.deleteUser=(req,res,next)=>{
-    const userId=req.query.userId;
-    User.deleteOne({_id:userId},(err,docs)=>{
-        if(err){
+exports.deleteUser = (req, res, next) => {
+    const userId = req.query.userId;
+    User.deleteOne({ _id: userId }, (err, userDocs) => {
+        if (err) {
             console.log(err);
         }
-        else{
-            res.redirect('/admin/users');
+        else {
+            Notification.deleteMany({ notificationAboutUser: userId }, (err, notiDocs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    Post.deleteMany({ postedBy: userId }, (err, postDocs) => {
+                        Post.updateOne({
+                            postedLikedBy:{
+                                $in:[userId]
+                            }
+                        },{
+                            $pullAll:{
+                                postedLikedBy:{
+                                    $in:[userId]
+                                }
+                            }
+                        },(err,postLikesDocs)=>{
+                            res.redirect('/admin/users');
+                        })
+                    });
+                }
+            });
         }
     });
 }
 
-exports.makeAdmin=(req,res,next)=>{
-    const userId=req.query.userId;
-    User.updateOne({_id:userId},{$set:{isAdmin:true}},(err,docs)=>{
-        if(err){
+exports.makeAdmin = (req, res, next) => {
+    const userId = req.query.userId;
+    User.updateOne({ _id: userId }, { $set: { isAdmin: true } }, (err, docs) => {
+        if (err) {
             console.log(err);
         }
-        else{
+        else {
             res.redirect('/admin/users');
         }
     })
@@ -149,9 +172,9 @@ exports.makeAdmin=(req,res,next)=>{
 
 exports.getUsers = (req, res, next) => {
     User.find({
-        'isAdmin':{
-            $not:{
-                $eq:true
+        'isAdmin': {
+            $not: {
+                $eq: true
             }
         }
     }).populate()

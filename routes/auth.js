@@ -32,5 +32,4 @@ router.post('/verifyotp', authController.postVerifyOTP);
 
 router.post('/password-changed', authController.postResetPassword);
 
-
 module.exports=router;

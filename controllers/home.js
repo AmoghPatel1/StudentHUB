@@ -13,10 +13,7 @@ exports.getHome = (req, res, next) => {
                 path: 'postedBy',
             })
             .populate({
-                path: 'postLikedBy',
-                options: {
-                    limit: 2,
-                }
+                path: 'postLikedBy'
             })
             .exec((err, posts) => {
                 if (err) {
@@ -693,6 +690,7 @@ exports.likePost = (req, res, next) => {
             console.log(err);
         }
         else {
+            console.log(docs);
             if (docs.postedBy != currentUserId) {
                 const notification = new Notification({
                     notificationDate: Date.now(),
