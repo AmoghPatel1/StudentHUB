@@ -33,7 +33,9 @@
                                     <a class="profile">
                                         <label for="fname">Profile Photo</label>
                                         <div class="profile-photoSettings">
-                                            <img class="settings-page-piture" src="./images/<%= profilePic %>" alt="profile-picture">
+                                            <img class="settings-page-piture" src="./images/<%= profilePic %>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                                            min-width: 100%;
+                                            min-height: 100%" alt="profile-picture">
                                         </div>
                                     </a>
                                 

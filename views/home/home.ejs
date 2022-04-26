@@ -29,7 +29,9 @@
                                     <div class="story"
                                         style="background:url('../images/<%=post.postImage%>') no-repeat center center/cover;">
                                         <div class="profile-photo">
-                                            <img src="../images/<%= post.postedBy.profilePic %> ">
+                                            <img src="../images/<%= post.postedBy.profilePic %>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                                            min-width: 100%;
+                                            min-height: 100%" >
                                         </div>
                                         <a href="/profile?id=<%=post.postedBy._id.toString()%>"
                                             style="text-decoration: none;color: white;z-index: 50;">

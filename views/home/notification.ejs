@@ -34,7 +34,9 @@
                                         style="display: flex;justify-content: space-between;">
                                         <div style="display: flex;">
                                             <div class="profile-photo">
-                                                <img src="./images/<%=notification.notificationAboutUser.profilePic%>"
+                                                <img src="./images/<%=notification.notificationAboutUser.profilePic%>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                                                min-width: 100%;
+                                                min-height: 100%" 
                                                     alt="">
                                             </div>
                                             <div class="notification-body" style="margin: 0px 10px;">

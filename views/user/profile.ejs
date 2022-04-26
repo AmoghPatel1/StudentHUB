@@ -14,7 +14,9 @@
                         <div class="left">
                             <a class="profile">
                                 <div class="profile-photo">
-                                    <img src="./images/<%= searchedUserProfilePic %>" alt="profile-picture">
+                                    <img src="./images/<%= searchedUserProfilePic %>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                                    min-width: 100%;
+                                    min-height: 100%" alt="profile-picture">
                                 </div>
                                 <div class="handle">
                                     <h4>

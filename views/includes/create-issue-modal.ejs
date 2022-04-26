@@ -9,7 +9,9 @@
                 <form action="/addPost" method="post" enctype="multipart/form-data">
                     <div class="content">
                         <div class="profile-photo">
-                            <img src="../images/<%= profilePic %>" alt="profile-picture">
+                            <img src="../images/<%= profilePic %>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                            min-width: 100%;
+                            min-height: 100%" alt="profile-picture">
                         </div>
                         <div class="details">
                             <p><%=username%></p>

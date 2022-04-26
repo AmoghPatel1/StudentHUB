@@ -35,7 +35,9 @@
         <div class="create">
             <label id="create-issue-nav-bar" class="btn btn-primary" for="#create-post">Create</label>
             <div id="profile-photo-nav" class="profile-photo">
-                <img src="../images/<%= profilePic %>" alt="profile-picture">
+                <img src="../images/<%= profilePic %>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                min-width: 100%;
+                min-height: 100%"  alt="profile-picture">
             </div>
             <div class="menu hidden-popup" id="profile-menu">
                 <h3 id="pop-up-username"><%= username %><br></h3>

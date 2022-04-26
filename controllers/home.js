@@ -1,4 +1,3 @@
-
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Post = require('../models/Post');
@@ -690,7 +689,6 @@ exports.likePost = (req, res, next) => {
             console.log(err);
         }
         else {
-            console.log(docs);
             if (docs.postedBy != currentUserId) {
                 const notification = new Notification({
                     notificationDate: Date.now(),

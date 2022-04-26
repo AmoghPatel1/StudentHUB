@@ -9,7 +9,9 @@
                 <div class="head">
                     <div class="user">
                         <div class="profile-photo">
-                            <img src="../images/<%= post.postedBy.profilePic %>" alt="profile-picture">
+                            <img src="../images/<%= post.postedBy.profilePic %>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                            min-width: 100%;
+                            min-height: 100%" alt="profile-picture">
                         </div>
                         <div class="info">
                             <a href="/profile?id=<%=post.postedBy._id.toString()%>"
@@ -100,15 +102,21 @@
                                 </p>
                                 <% }else if(post.postLikedBy.length===1) {%>
                                     <span class="profile-photo"><img
-                                            src="../images/<%= post.postLikedBy[0].profilePic%>"></span>
+                                            src="../images/<%= post.postLikedBy[0].profilePic%> onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                                            min-width: 100%;
+                                            min-height: 100%" "></span>
                                     <p class="liked-by">
                                         Liked by <%= post.postLikedBy[0].username%></b>
                                     </p>
                                     <% }else{ %>
                                         <span class="profile-photo"><img
-                                                src="../images/<%= post.postLikedBy[0].profilePic%>"></span>
+                                                src="../images/<%= post.postLikedBy[0].profilePic%>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                                                min-width: 100%;
+                                                min-height: 100%" ></span>
                                         <span class="profile-photo"><img
-                                                src="../images/<%= post.postLikedBy[1].profilePic%>"></span>
+                                                src="../images/<%= post.postLikedBy[1].profilePic%>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                                                min-width: 100%;
+                                                min-height: 100%" ></span>
                                         <p class="liked-by">
                                             Liked by <%= post.postLikedBy[0].username%> and <%=
                                                     post.postLikedBy.length-1 %>
