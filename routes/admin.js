@@ -8,11 +8,11 @@ const router=express.Router();
 
 router.get('/login',adminController.getLogin);
 
-router.get('/deletePost',adminController.deletePost);
+router.get('/deletePost/:postId',adminController.deletePost);
 
-router.get('/deleteUser',adminController.deleteUser);
+router.get('/deleteUser/:userId',adminController.deleteUser);
 
-router.get('/makeAdmin',adminController.makeAdmin);
+router.get('/makeAdmin/:userId',adminController.makeAdmin);
 
 router.post('/login',adminController.postLogin);
 

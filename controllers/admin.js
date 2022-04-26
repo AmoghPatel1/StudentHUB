@@ -116,7 +116,7 @@ exports.getPosts = (req, res, next) => {
 }
 
 exports.deletePost = (req, res, next) => {
-    const postId = req.query.postId;
+    const postId = req.params.postId;
     Post.deleteOne({ _id: postId }, (err, docs) => {
         if (err) {
             console.log(err);
@@ -126,7 +126,7 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.deleteUser = (req, res, next) => {
-    const userId = req.query.userId;
+    const userId = req.params.userId;
     User.deleteOne({ _id: userId }, (err, userDocs) => {
         if (err) {
             console.log(err);
@@ -159,7 +159,7 @@ exports.deleteUser = (req, res, next) => {
 }
 
 exports.makeAdmin = (req, res, next) => {
-    const userId = req.query.userId;
+    const userId = req.params.userId;
     User.updateOne({ _id: userId }, { $set: { isAdmin: true } }, (err, docs) => {
         if (err) {
             console.log(err);

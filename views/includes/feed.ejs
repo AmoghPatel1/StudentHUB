@@ -102,9 +102,9 @@
                                 </p>
                                 <% }else if(post.postLikedBy.length===1) {%>
                                     <span class="profile-photo"><img
-                                            src="../images/<%= post.postLikedBy[0].profilePic%> onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
+                                            src="../images/<%= post.postLikedBy[0].profilePic%>" onerror="this.onerror=null;this.src='../images/default-profile.jpg'" style="object-fit: cover;
                                             min-width: 100%;
-                                            min-height: 100%" "></span>
+                                            min-height: 100%"></span>
                                     <p class="liked-by">
                                         Liked by <%= post.postLikedBy[0].username%></b>
                                     </p>
