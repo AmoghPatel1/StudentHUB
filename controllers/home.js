@@ -455,18 +455,23 @@ exports.getProfile = (req, res, next) => {
 }
 
 exports.postAddPost = (req, res, next) => {
-    let { category, description } = req.body;
+    let post = new Post({
+        category: req.body.category, 
+        description: req.body.description, 
+        file: req.file
+    });
+
     let filename;
-    if (req.file) {
-        filename = req.file.filename;
+    if (post.file) {
+        filename = post.file.filename;
     }
 
     try {
         getBasicUserDetails(req, (userid, username, email, profilePic) => {
             const post = new Post({
                 postDate: Date.now(),
-                postCategory: category,
-                postDescription: description,
+                postCategory: post.category,
+                postDescription: post.description,
                 postImage: filename,
                 postedBy: userid
             });
@@ -982,3 +987,31 @@ const getUserId = (req) => {
     return verifyUser._id;
 }
 
+class Post {
+    constructor(category, description, file) {
+        this.category = category;
+        this.description = description;
+        this.file = file;
+    }
+
+    get category() {
+        return this._category;
+    }
+    set category(category) {
+        this._category = category;
+    }
+    get description() {
+        return this._description;
+    }
+    set description(description) {
+        this._description = description;
+    }
+    get file() {
+        return this._file;
+    }
+    set filename(file) {
+        this._file = file;
+    }
+    
+
+}
