@@ -1,4 +1,4 @@
-# FSD1
+# StudentHUB
 
 Install the dependencies using 
 ```
