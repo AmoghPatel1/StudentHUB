@@ -31,12 +31,9 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postRegisterUser = (req, res, next) => {
-
-    let {
-        email
-    } = req.body;
-
-    email = email.trim();
+    let newUser= new User({
+        email: req.body.email.trim(),
+    });
 
     if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
         res.render('auth/login', {
@@ -50,7 +47,7 @@ exports.postRegisterUser = (req, res, next) => {
         });
     } else {
         User.find({
-            email: email
+            email: newUser.email
         }, (err, docs) => {
             if (err) {
                 res.render('auth/login', {
@@ -65,25 +62,25 @@ exports.postRegisterUser = (req, res, next) => {
             } else {
                 if (docs.length === 0) {
                     UserOTPVerification.find({
-                        email: email
+                        email: newUser.email
                     }, (err, otpuser) => {
                         if (otpuser.length === 0) {
-                            sendOTPVerificationEmail(email, res, () => {
+                            sendOTPVerificationEmail(newUser.email, res, () => {
                                 res.render('auth/verify', {
                                     pageTitle: 'Verify your email',
-                                    email: email,
+                                    email: newUser.email,
                                     info: "",
                                     warning: ""
                                 });
                             });
                         } else {
                             UserOTPVerification.deleteMany({
-                                email: email
+                                email: newUser.email
                             }, () => {
-                                sendOTPVerificationEmail(email, res, () => {
+                                sendOTPVerificationEmail(newUser.email, res, () => {
                                     res.render('auth/verify', {
                                         pageTitle: 'Verify your email',
-                                        email: email,
+                                        email: newUser.email,
                                         info: "OTP has been sent to your email.",
                                         warning: ""
                                     });
@@ -109,15 +106,12 @@ exports.postRegisterUser = (req, res, next) => {
 
 exports.postSignInUser = (req, res, next) => {
 
-    let {
-        username,
-        password
-    } = req.body;
+    let newUser = new User({
+        username: req.body.username.trim(),
+        password: req.body.password.trim()
+    }); 
 
-    username = username.trim();
-    password = password.trim();
-
-    if (username === '' || password == "") {
+    if (newUser.username === '' || newUser.password == "") {
         res.render('auth/login', {
             pageTitle: 'Login',
             username: '',
@@ -129,7 +123,7 @@ exports.postSignInUser = (req, res, next) => {
         });
     } else {
         User.findOne({
-            username: username
+            username: newUser.username
         }, (err, docs) => {
             if (err) {
                 res.render('auth/login', {
@@ -153,7 +147,7 @@ exports.postSignInUser = (req, res, next) => {
                         containerClass: ''
                     });
                 } else {
-                    bcrypt.compare(password, docs.password, (err, result) => {
+                    bcrypt.compare(newUser.password, docs.password, (err, result) => {
                         if (err) {
                             res.render('auth/login', {
                                 pageTitle: 'Login',
@@ -193,29 +187,27 @@ exports.postSignInUser = (req, res, next) => {
 
 exports.postVerifyUser = (req, res, next) => {
     try {
-        let {
-            otp,
-            email
-        } = req.body
 
-        otp = otp.trim();
-        email = email.trim();
+        let newUser= new User({
+            otp: req.body.otp.trim(),
+            email: req.body.email.trim(),
+        });
 
-        if (!email || !otp) {
+        if (!newUser.email || !newUser.otp) {
             res.render('auth/verify', {
                 pageTitle: 'Verify your email',
-                email: email,
+                email: newUser.email,
                 info: "",
                 warning: "Enter non empty details."
             });
         } else {
             UserOTPVerification.find({
-                email: email
+                email: newUser.email
             }, (err, docs) => {
                 if (docs.length <= 0) {
                     res.render('auth/verify', {
                         pageTitle: 'Verify your email',
-                        email: email,
+                        email: newUser.email,
                         info: "",
                         warning: "Account has been verified earlier."
                     });
@@ -228,26 +220,26 @@ exports.postVerifyUser = (req, res, next) => {
                     if (expiredAt < Date.now()) {
                         res.render('auth/verify', {
                             pageTitle: 'Verify your email',
-                            email: email,
+                            email: newUser.email,
                             info: "",
                             warning: "OTP has expired."
                         });
                     } else {
-                        bcrypt.compare(otp, hashedOtp, (err, validOtp) => {
+                        bcrypt.compare(newUser.otp, hashedOtp, (err, validOtp) => {
                             if (!validOtp) {
                                 res.render('auth/verify', {
                                     pageTitle: 'Verify your email',
-                                    email: email,
+                                    email: newUser.email,
                                     info: "",
                                     warning: "Invalid OTP."
                                 });
                             } else {
                                 UserOTPVerification.deleteMany({
-                                    email: email
+                                    email: newUser.email
                                 }, () => {
                                     res.render('auth/details', {
                                         pageTitle: 'Details',
-                                        email: email,
+                                        email: newUser.email,
                                         info: "",
                                         warning: ""
                                     });
@@ -262,7 +254,7 @@ exports.postVerifyUser = (req, res, next) => {
         console.log(error);
         res.render('auth/verify', {
             pageTitle: 'Verify your email',
-            email: email,
+            email: newUser.email,
             info: "",
             warning: "Verification failed."
         });
@@ -314,20 +306,15 @@ exports.postResendOTP = (req, res, next) => {
 
 exports.postDetails = (req, res, next) => {
 
-    let {
-        username,
-        email,
-        password,
-        confirm_password
-    } = req.body;
+    let newUser = new User({
+        username: req.body.username.trim(),
+        email: req.body.email.trim(),
+        password: req.body.password.trim(),
+        confirm_password: req.body.confirm_password.trim(),
+        profile_pic: req.file
+    });
 
-    username = username.trim();
-    email = email.trim();
-    file = req.file;
-    password = password.trim();
-    confirm_password = confirm_password.trim();
-
-    if (!(!username || !email || !file || !password || !confirm_password)) {
+    if (!(!newUser.username || !newUser.email || !newUser.file || !newUser.password || !confirm_password)) {
         if (password !== confirm_password) {
             res.render('auth/details', {
                 pageTitle: 'Details',
@@ -755,3 +742,53 @@ const sendForgetPasswordOTP = (email, res, cb) => {
         res.redirect('/forgotpassword');
     };
 }
+
+class User{
+    constructor(email, password, confirm_password,username,otp){
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.confirm_password = confirm_password;
+        this.otp = otp;
+    }
+
+    getEmail(){
+        return this.email;
+    }
+
+    getPassword(){
+        return this.password;
+    }
+
+    getUsername(){
+        return this.username;
+    }
+
+    getConfirmPassword(){
+        return this.confirm_password;
+    }
+
+    getOTP(){
+        return this.otp;
+    }
+
+    setEmail(email){
+        this.email = email;
+    }
+
+    setPassword(password){
+        this.password = password;
+    }
+
+    setUsername(username){
+        this.username = username;
+    }
+
+    setConfirmPassword(confirm_password){
+        this.confirm_password = confirm_password;
+    }
+
+    setOTP(otp){
+        this.otp = otp;
+    }
+};
